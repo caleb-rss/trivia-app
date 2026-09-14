@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Set History</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+
+            <p class="eyebrow">
+                CLAUD'S TRIVIA SYSTEM
+            </p>
+
+            <h1>
+                SET SEARCH
+            </h1>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/">
+                [dashboard]
+            </a>
+
+            <a href="/generate">
+                [generate]
+            </a>
+
+            <a href="/questions">
+                [questions]
+            </a>
+
+            <a href="/import">
+                [bulk import]
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <section>
+
+        <form
+            class="question-search"
+            method="GET"
+            action="/sets"
+        >
+
+            <input
+                type="text"
+                name="search"
+                value="<%= search %>"
+                placeholder="search set names..."
+            >
+
+
+            <select
+                name="filter"
+            >
+
+                <option
+                    value="all"
+                    <%= filter === "all" ? "selected" : "" %>
+                >
+                    all
+                </option>
+
+
+                <option
+                    value="ready"
+                    <%= filter === "ready" ? "selected" : "" %>
+                >
+                    ready
+                </option>
+
+
+                <option
+                    value="played"
+                    <%= filter === "played" ? "selected" : "" %>
+                >
+                    played
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+            >
+                [search]
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section>
+
+        <h2>
+            RESULTS / <%= sets.length %>
+        </h2>
+
+
+        <div class="question-list">
+
+            <% for (const set of sets) { %>
+
+                <article
+                    class="question-row"
+                >
+
+                    <div
+                        class="question-row-top"
+                    >
+
+                        <span
+                            class="question-code"
+                        >
+
+                            <a
+                                href="/sets/<%= set.id %>"
+                            >
+                                <%= set.name %>
+                            </a>
+
+                        </span>
+
+
+                        <span
+                            class="question-topic"
+                        >
+                            <%= set.status.toUpperCase() %>
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="question-meta"
+                    >
+
+                        <span>
+                            questions:
+                            <%= set.question_count %>
+                        </span>
+
+
+                        <span>
+                            played:
+                            <%= set.played_at || "not yet" %>
+                        </span>
+
+
+                        <span>
+                            created:
+                            <%= String(set.created_at).slice(0, 10) %>
+                        </span>
+
+                    </div>
+
+                </article>
+
+            <% } %>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

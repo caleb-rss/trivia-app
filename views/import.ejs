@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Bulk Import</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+            <p class="eyebrow">
+                CLAUD'S TRIVIA SYSTEM
+            </p>
+
+            <h1>
+                BULK IMPORT
+            </h1>
+        </div>
+
+        <nav>
+            <a href="/">[dashboard]</a>
+            <a href="/questions">[questions]</a>
+            <a href="/generate">[generate]</a>
+            <a href="/sets">[history]</a>
+        </nav>
+
+    </header>
+
+
+    <% if (result) { %>
+
+        <section class="import-result">
+
+            <h2>
+                IMPORT COMPLETE
+            </h2>
+
+            <p>
+                imported:
+                <strong>
+                    <%= result.imported %>
+                </strong>
+            </p>
+
+            <% if (result.firstCode) { %>
+
+                <p>
+                    IDs:
+                    <%= result.firstCode %>
+                    →
+                    <%= result.lastCode %>
+                </p>
+
+            <% } %>
+
+        </section>
+
+    <% } %>
+
+
+    <section>
+
+        <h2>
+            01. PASTE QUESTIONS
+        </h2>
+
+        <p class="muted import-help">
+            One question per line. Use tabs or | between fields.
+        </p>
+
+        <pre class="import-example">Question | Answer | Topic | Difficulty | Format</pre>
+
+        <form
+            class="question-form"
+            method="POST"
+            action="/import/preview-paste"
+        >
+
+            <label>
+                BULK TEXT
+
+                <textarea
+                    name="bulk_text"
+                    class="bulk-import-text"
+                    placeholder="What is the capital of Peru? | Lima | World | 2 | Open&#10;Who directed Jaws? | Steven Spielberg | Film/TV | 2 | Open"
+                    required
+                ></textarea>
+            </label>
+
+            <button type="submit">
+                [ PREVIEW IMPORT ]
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section>
+
+        <h2>
+            02. CSV FILE
+        </h2>
+
+        <p class="muted import-help">
+            Headers: Question, Answer, Topic, Difficulty, Format
+        </p>
+
+        <form
+            class="question-form"
+            method="POST"
+            action="/import/preview-csv"
+            enctype="multipart/form-data"
+        >
+
+            <label>
+                CSV FILE
+
+                <input
+                    type="file"
+                    name="csv_file"
+                    accept=".csv,text/csv"
+                    required
+                >
+            </label>
+
+            <button type="submit">
+                [ PREVIEW CSV ]
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

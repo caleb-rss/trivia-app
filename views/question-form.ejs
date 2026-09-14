@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        <%= mode === "new" ? "Add Question" : "Edit Question" %>
+    </title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+            <p class="eyebrow">
+                CLAUD'S TRIVIA SYSTEM
+            </p>
+
+            <h1>
+                <%= mode === "new"
+                    ? "ADD QUESTION"
+                    : `EDIT ${question.question_code}`
+                %>
+            </h1>
+        </div>
+
+        <nav>
+            <a href="/">[dashboard]</a>
+            <a href="/questions">[questions]</a>
+        </nav>
+
+    </header>
+
+
+    <form
+        class="question-form"
+        method="POST"
+        action="<%= mode === 'new'
+            ? '/questions'
+            : `/questions/${question.id}`
+        %>"
+    >
+
+        <label>
+            QUESTION
+
+            <textarea
+                name="question"
+                required
+            ><%= question?.question || "" %></textarea>
+        </label>
+
+
+        <label>
+            ANSWER
+
+            <input
+                type="text"
+                name="answer"
+                value="<%= question?.answer || '' %>"
+                required
+            >
+        </label>
+
+
+        <label>
+            TOPIC
+
+            <input
+                type="text"
+                name="topic"
+                value="<%= question?.topic || '' %>"
+            >
+        </label>
+
+
+        <label>
+            FORMAT
+
+            <input
+                type="text"
+                name="format"
+                value="<%= question?.format || '' %>"
+            >
+        </label>
+
+
+        <label>
+            DIFFICULTY
+
+            <input
+                type="number"
+                min="1"
+                max="5"
+                name="difficulty"
+                value="<%= question?.difficulty ?? '' %>"
+            >
+        </label>
+
+
+        <% if (mode === "edit") { %>
+
+            <label class="checkbox-row">
+
+                <input
+                    type="checkbox"
+                    name="enabled"
+                    <%= question.enabled ? "checked" : "" %>
+                >
+
+                ENABLED
+
+            </label>
+
+        <% } %>
+
+
+        <button type="submit">
+            [ SAVE QUESTION ]
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+</html>

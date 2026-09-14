@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Generated Trivia Set</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+
+            <p class="eyebrow">
+                GENERATED DRAFT
+            </p>
+
+            <h1>
+                NEW TRIVIA SET
+            </h1>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/">
+                [dashboard]
+            </a>
+
+            <a href="/generate">
+                [start over]
+            </a>
+
+            <a href="/questions">
+                [questions]
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <form
+        action="/sets"
+        method="POST"
+    >
+
+        <div class="set-name">
+
+            <label>
+
+                SET NAME
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Sunday Trivia"
+                >
+
+            </label>
+
+        </div>
+
+
+        <section>
+
+            <h2>
+                QUESTIONS / <%= selected.length %>
+            </h2>
+
+
+            <div class="generated-list">
+
+                <% selected.forEach((item, index) => { %>
+
+                    <article
+                        class="generated-question"
+                        data-question-id="<%= item.id %>"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="question_ids"
+                            value="<%= item.id %>"
+                            class="question-id-input"
+                        >
+
+
+                        <div
+                            class="question-row-top"
+                        >
+
+                            <span
+                                class="question-code"
+                            >
+
+                                <span
+                                    class="position-number"
+                                >
+                                    <%= String(index + 1).padStart(2, "0") %>
+                                </span>
+
+                                /
+
+                                <span
+                                    class="code-value"
+                                >
+                                    <%= item.question_code %>
+                                </span>
+
+                            </span>
+
+
+                            <span
+                                class="question-topic"
+                            >
+                                <%= item.topic || "[no topic]" %>
+                            </span>
+
+                        </div>
+
+
+                        <p
+                            class="question-text"
+                        >
+                            <%= item.question %>
+                        </p>
+
+
+                        <p
+                            class="question-answer"
+                        >
+                            → <%= item.answer %>
+                        </p>
+
+
+                        <div
+                            class="question-meta"
+                        >
+
+                            <span
+                                class="difficulty"
+                            >
+                                difficulty:
+                                <%= item.difficulty ?? "-" %>
+                            </span>
+
+
+                            <span
+                                class="times-used"
+                            >
+                                used:
+                                <%= item.times_used %>
+                            </span>
+
+
+                            <span
+                                class="last-used"
+                            >
+                                last:
+                                <%= item.last_used || "never" %>
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="question-actions"
+                        >
+
+                            <button
+                                type="button"
+                                class="reroll-button"
+                            >
+                                [reroll]
+                            </button>
+
+
+                            <span
+                                class="reroll-status"
+                            ></span>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+        </section>
+
+
+        <button
+            class="save-set-button"
+            type="submit"
+        >
+            [ SAVE SET ]
+        </button>
+
+    </form>
+
+</main>
+
+
+<script>
+
+    window.generatorSettings = {
+        minWeeks:
+            <%- JSON.stringify(
+                settings.minWeeks
+            ) %>,
+
+        topic:
+            <%- JSON.stringify(
+                settings.topic
+            ) %>,
+
+        preferUnused:
+            <%- JSON.stringify(
+                settings.preferUnused
+            ) %>,
+
+        balanceTopics:
+            <%- JSON.stringify(
+                settings.balanceTopics
+            ) %>
+    };
+
+</script>
+
+
+<script
+    src="/js/reroll.js"
+></script>
+
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Question Database</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+
+            <div>
+                <p class="eyebrow">
+                    CLAUD'S TRIVIA SYSTEM
+                </p>
+
+                <h1>
+                    QUESTION DATABASE
+                </h1>
+            </div>
+
+            <nav>
+                <a href="/">[dashboard]</a>
+                <a href="/questions">[questions]</a>
+                <a href="/generate">[generate]</a>
+                <a href="/sets">[history]</a>
+            </nav>
+
+        </header>
+
+
+        <section>
+
+           <form
+                class="question-search"
+                method="GET"
+                action="/questions"
+            >
+
+                <input
+                    type="text"
+                    name="search"
+                    value="<%= search %>"
+                    placeholder="search question, answer, topic..."
+                >
+
+
+                <select name="topic">
+
+                    <option value="">
+                        all topics
+                    </option>
+
+                    <% for (const item of topics) { %>
+
+                        <option
+                            value="<%= item.topic %>"
+                            <%= topic === item.topic ? "selected" : "" %>
+                        >
+                            <%= item.topic %>
+                        </option>
+
+                    <% } %>
+
+                </select>
+
+
+                <select name="filter">
+
+                    <option
+                        value="all"
+                        <%= filter === "all" ? "selected" : "" %>
+                    >
+                        all
+                    </option>
+
+                    <option
+                        value="enabled"
+                        <%= filter === "enabled" ? "selected" : "" %>
+                    >
+                        enabled
+                    </option>
+
+                    <option
+                        value="unused"
+                        <%= filter === "unused" ? "selected" : "" %>
+                    >
+                        unused
+                    </option>
+
+                    <option
+                        value="review"
+                        <%= filter === "review" ? "selected" : "" %>
+                    >
+                        needs review
+                    </option>
+
+                    <option
+                        value="disabled"
+                        <%= filter === "disabled" ? "selected" : "" %>
+                    >
+                        disabled
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    [search]
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <section>
+
+            <div class="question-list">
+
+                <% for (const item of questions) { %>
+
+                    <article class="question-row">
+
+                        <div class="question-row-top">
+
+                            <a href="/questions/<%= item.id %>">
+                                <%= item.question_code %>
+                            </a>
+
+                            <span class="question-topic">
+                                <%= item.topic || "[no topic]" %>
+                            </span>
+
+                        </div>
+
+
+                        <a href="/questions/<%= item.id %>">
+                            <%= item.question_code %>
+                        </a>
+
+
+                        <p class="question-answer">
+                            → <%= item.answer %>
+                        </p>
+
+
+                        <div class="question-meta">
+
+                            <span>
+                                difficulty:
+                                <%= item.difficulty ?? "-" %>
+                            </span>
+
+                            <span>
+                                used:
+                                <%= item.times_used %>
+                            </span>
+
+                            <span>
+                                last:
+                                <%= item.last_used || "never" %>
+                            </span>
+
+                            <% if (item.needs_review) { %>
+                                <span class="warning">
+                                    [review]
+                                </span>
+                            <% } %>
+
+                        </div>
+
+                    </article>
+
+                <% } %>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

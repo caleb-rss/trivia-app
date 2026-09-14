@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Import Preview</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+            <p class="eyebrow">
+                BULK IMPORT
+            </p>
+
+            <h1>
+                PREVIEW
+            </h1>
+        </div>
+
+        <nav>
+            <a href="/import">[back]</a>
+            <a href="/questions">[questions]</a>
+        </nav>
+
+    </header>
+
+
+    <form
+        method="POST"
+        action="/import/commit"
+    >
+
+        <input
+            type="hidden"
+            name="rows"
+            value="<%= Buffer.from(JSON.stringify(rows)).toString('base64') %>"
+        >
+
+
+        <section>
+
+            <div class="import-summary">
+
+                <span>
+                    rows:
+                    <%= rows.length %>
+                </span>
+
+                <span>
+                    valid:
+                    <%= rows.filter(row => row.valid).length %>
+                </span>
+
+                <span>
+                    warnings:
+                    <%= rows.filter(row => row.issues.length).length %>
+                </span>
+
+            </div>
+
+
+            <div class="import-table">
+
+                <% rows.forEach((row, index) => { %>
+
+                    <article
+                        class="import-row <%= row.valid ? '' : 'import-invalid' %>"
+                    >
+
+                        <label class="import-check">
+
+                            <input
+                                type="checkbox"
+                                name="include"
+                                value="<%= index %>"
+                                <%= row.valid && !row.duplicateInBatch ? "checked" : "" %>
+                                <%= !row.valid ? "disabled" : "" %>
+                            >
+
+                        </label>
+
+
+                        <div class="import-content">
+
+                            <div class="question-row-top">
+
+                                <span class="question-code">
+                                    ROW <%= row.sourceRow %>
+                                </span>
+
+                                <span class="question-topic">
+                                    <%= row.topic || "[no topic]" %>
+                                </span>
+
+                            </div>
+
+
+                            <p class="question-text">
+                                <%= row.question || "[missing question]" %>
+                            </p>
+
+
+                            <p class="question-answer">
+                                → <%= row.answer || "[missing answer]" %>
+                            </p>
+
+
+                            <div class="question-meta">
+
+                                <span>
+                                    difficulty:
+                                    <%= row.difficulty ?? "-" %>
+                                </span>
+
+                                <span>
+                                    format:
+                                    <%= row.format || "-" %>
+                                </span>
+
+                            </div>
+
+
+                            <% if (row.issues.length) { %>
+
+                                <div class="import-warnings">
+
+                                    <% for (const issue of row.issues) { %>
+
+                                        <span>
+                                            [<%= issue %>]
+                                        </span>
+
+                                    <% } %>
+
+                                </div>
+
+                            <% } %>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+        </section>
+
+
+        <button
+            type="submit"
+            class="save-set-button"
+        >
+            [ IMPORT SELECTED ]
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+</html>

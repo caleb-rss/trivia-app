@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title><%= question.question_code %></title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+        <div>
+            <p class="eyebrow">
+                QUESTION RECORD
+            </p>
+
+            <h1>
+                <%= question.question_code %>
+            </h1>
+        </div>
+
+        <nav>
+            <a href="/">[dashboard]</a>
+            <a href="/questions">[questions]</a>
+            <a href="/questions/<%= question.id %>/edit">
+                [edit]
+            </a>
+        </nav>
+    </header>
+
+
+    <section>
+
+        <h2>01. QUESTION</h2>
+
+        <p class="detail-question">
+            <%= question.question %>
+        </p>
+
+        <p class="detail-answer">
+            → <%= question.answer %>
+        </p>
+
+    </section>
+
+
+    <section>
+
+        <h2>02. METADATA</h2>
+
+        <div class="status-list">
+
+            <p>
+                topic
+                <span>
+                    <%= question.topic || "-" %>
+                </span>
+            </p>
+
+            <p>
+                format
+                <span>
+                    <%= question.format || "-" %>
+                </span>
+            </p>
+
+            <p>
+                difficulty
+                <span>
+                    <%= question.difficulty ?? "-" %>
+                </span>
+            </p>
+
+            <p>
+                enabled
+                <span>
+                    <%= question.enabled ? "yes" : "no" %>
+                </span>
+            </p>
+
+            <p>
+                times used
+                <span>
+                    <%= question.times_used %>
+                </span>
+            </p>
+
+            <p>
+                last used
+                <span>
+                    <%= question.last_used || "never" %>
+                </span>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2>03. HISTORY</h2>
+
+        <% if (!history.length) { %>
+
+            <p class="muted">
+                no confirmed historical uses
+            </p>
+
+        <% } else { %>
+
+            <div class="history-list">
+
+                <% for (const item of history) { %>
+
+                    <p>
+                        <span>
+                            <%= item.played_at || item.name %>
+                        </span>
+
+                        <span>
+                            position <%= item.position %>
+                        </span>
+                    </p>
+
+                <% } %>
+
+            </div>
+
+        <% } %>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title><%= set.name %></title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="header">
+
+        <div>
+
+            <p class="eyebrow">
+                TRIVIA SET
+            </p>
+
+
+            <form
+                class="set-title-form"
+                method="POST"
+                action="/sets/<%= set.id %>/rename"
+            >
+
+                <input
+                    class="set-title-input"
+                    type="text"
+                    name="name"
+                    value="<%= set.name %>"
+                    required
+                >
+
+                <button type="submit">
+                    [rename]
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/">
+                [dashboard]
+            </a>
+
+            <a href="/generate">
+                [new set]
+            </a>
+
+            <a href="/sets">
+                [history]
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <section>
+
+        <h2>STATUS</h2>
+
+
+        <div class="status-list">
+
+            <p>
+                state
+                <span>
+                    <%= set.status.toUpperCase() %>
+                </span>
+            </p>
+
+
+            <p>
+                questions
+                <span>
+                    <%= questions.length %>
+                </span>
+            </p>
+
+
+            <p>
+                played
+                <span>
+                    <%= set.played_at || "not yet" %>
+                </span>
+            </p>
+
+        </div>
+
+
+        <% if (set.status === "ready") { %>
+
+            <form
+                method="POST"
+                action="/sets/<%= set.id %>/play"
+            >
+
+                <button
+                    class="save-set-button"
+                    type="submit"
+                >
+                    [ MARK PLAYED ]
+                </button>
+
+            </form>
+
+            <form
+                method="POST"
+                action="/sets/<%= set.id %>/delete"
+                onsubmit="return confirm('Delete this ready set?');"
+            >
+
+                <button
+                    class="danger-button"
+                    type="submit"
+                >
+                    [ DELETE SET ]
+                </button>
+
+            </form>
+
+        <% } else { %>
+
+            <form
+                method="POST"
+                action="/sets/<%= set.id %>/unplay"
+            >
+
+                <button
+                    class="save-set-button"
+                    type="submit"
+                >
+                    [ RETURN TO READY ]
+                </button>
+
+            </form>
+
+        <% } %>
+
+    </section>
+
+
+    <% if (set.status === "ready") { %>
+
+
+            <section>
+
+    <h2>
+        ADD QUESTION
+    </h2>
+
+
+    <div
+        class="set-question-search"
+        data-set-id="<%= set.id %>"
+    >
+
+        <input
+            id="set-question-search-input"
+            type="search"
+            placeholder="search question, answer, topic..."
+            autocomplete="off"
+        >
+
+
+        <div
+            id="set-question-search-results"
+            class="set-question-search-results"
+        ></div>
+
+    </div>
+
+</section>
+
+
+    <% } %>
+
+
+    <section>
+
+        <h2>
+            QUESTIONS / <%= questions.length %>
+        </h2>
+
+
+        <% if (set.status === "ready") { %>
+
+            <p class="muted set-edit-help">
+                drag [move] to reorder
+            </p>
+
+        <% } %>
+
+
+        <div
+            id="set-question-list"
+            class="generated-list"
+            data-set-id="<%= set.id %>"
+            data-editable="<%= set.status === 'ready' ? 'true' : 'false' %>"
+        >
+
+            <% questions.forEach((item, index) => { %>
+
+                <article
+                    class="generated-question set-question-row"
+                    data-set-question-id="<%= item.set_question_id %>"
+                >
+
+                    <div class="question-row-top">
+
+                        <span class="question-code">
+
+                            <% if (set.status === "ready") { %>
+
+                                <button
+                                    class="drag-handle"
+                                    type="button"
+                                    aria-label="Drag to reorder"
+                                >
+                                    [move]
+                                </button>
+
+                            <% } %>
+
+
+                            <span class="set-position">
+                                <%= String(index + 1).padStart(2, "0") %>
+                            </span>
+
+                            /
+
+                            <a href="/questions/<%= item.id %>">
+                                <%= item.question_code %>
+                            </a>
+
+                        </span>
+
+
+                        <span class="question-topic">
+                            <%= item.topic || "[no topic]" %>
+                        </span>
+
+                    </div>
+
+
+                    <p class="question-text">
+                        <%= item.question %>
+                    </p>
+
+
+                    <p class="question-answer">
+                        → <%= item.answer %>
+                    </p>
+
+
+                    <% if (set.status === "ready") { %>
+
+                        <div class="question-actions">
+
+                            <form
+                                method="POST"
+                                action="/sets/<%= set.id %>/questions/<%= item.set_question_id %>/remove"
+                            >
+
+                                <button
+                                    class="remove-question-button"
+                                    type="submit"
+                                >
+                                    [remove]
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    <% } %>
+
+                </article>
+
+            <% }) %>
+
+        </div>
+
+
+        <% if (set.status === "ready") { %>
+
+            <p
+                id="reorder-status"
+                class="reorder-status"
+            ></p>
+
+        <% } %>
+
+    </section>
+
+</main>
+
+
+<% if (set.status === "ready") { %>
+
+    
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"
+    ></script>
+
+    <script
+        src="/js/set-editor.js"
+    ></script>
+
+    <script
+        src="/js/set-search.js"
+    ></script>
+
+<% } %>
+
+</body>
+
+</html>

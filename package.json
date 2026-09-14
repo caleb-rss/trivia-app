@@ -3,24 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-   "scripts": {
+  "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "import": "node scripts/import.js"
-    },
+    "import": "node scripts/import.js",
+    "scan-history": "node scripts/scan-history.js",
+    "match-history": "node scripts/match-history.js",
+    "fuzzy-history": "node scripts/fuzzy-history.js",
+    "import-history": "node scripts/import-history.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "better-sqlite3": "^13.0.3",
+    "csv-parse": "^7.0.2",
     "ejs": "^6.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "fuse.js": "^7.5.0",
+    "multer": "^2.4.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
   },
   "allowScripts": {
-    "better-sqlite3@13.0.3": true
+    "better-sqlite3@13.0.3": true,
+    "fsevents@2.3.3": true
   }
 }

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Claud's Trivia</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <header class="header">
+
+            <div>
+                <p class="eyebrow">
+                    CLAUD'S TRIVIA SYSTEM
+                </p>
+
+                <h1>
+                    TRIVIA CONTROL
+                </h1>
+            </div>
+
+            <nav>
+                <a href="/">
+                    [dashboard]
+                </a>
+
+                <a href="/questions">
+                    [questions]
+                </a>
+
+                <a href="/generate">
+                    [generate]
+                </a>
+
+                <a href="/sets">
+                    [history]
+                </a>
+            </nav>
+
+        </header>
+
+
+        <section>
+
+            <h2>
+                01. DATABASE STATUS
+            </h2>
+
+
+            <div class="stats">
+
+                <div>
+                    <span class="label">
+                        QUESTIONS
+                    </span>
+
+                    <strong>
+                        <%= stats.total %>
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span class="label">
+                        ENABLED
+                    </span>
+
+                    <strong>
+                        <%= stats.enabled %>
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span class="label">
+                        NEEDS REVIEW
+                    </span>
+
+                    <strong>
+                        <%= stats.needs_review %>
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span class="label">
+                        NEVER USED
+                    </span>
+
+                    <strong>
+                        <%= neverUsed %>
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                02. HISTORY
+            </h2>
+
+
+            <div class="status-list">
+
+                <p>
+                    sets recorded
+                    <span>
+                        <%= sets %>
+                    </span>
+                </p>
+
+
+                <p>
+                    confirmed question uses
+                    <span>
+                        <%= usage.historical_uses %>
+                    </span>
+                </p>
+
+
+                <p>
+                    distinct questions used
+                    <span>
+                        <%= usage.questions_used %>
+                    </span>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                03. ACTIONS
+            </h2>
+
+
+            <div class="actions">
+
+                <a href="/generate">
+                    [ GENERATE SET ]
+                </a>
+
+                <a href="/questions/new">
+                    [ ADD QUESTION ]
+                </a>
+
+                <a href="/questions">
+                    [ QUESTION DATABASE ]
+                </a>
+
+                <a href="/sets">
+                    [ SET HISTORY ]
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            ─────────────────────────────────────────
+            <br>
+            trivia.db / sqlite
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
