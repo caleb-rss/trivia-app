@@ -9,6 +9,8 @@ const generatorRoutes = require("./routes/generator");
 const setRoutes = require("./routes/sets");
 
 const db = require("./db/database");
+const catalogRoutes = require("./routes/catalog");
+
 
 const app = express();
 const PORT = 3001;
@@ -135,6 +137,9 @@ app.use(
     "/sets",
     setRoutes
 );
+
+app.use("/catalog", catalogRoutes);
+
 
 
 /* =========================================================

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/catalog.css">
+</head>
+<body>
+<main class="container catalog-container">
+    <header class="header">
+        <div>
+            <p class="eyebrow">CATALOG MAINTENANCE</p>
+            <h1>POSSIBLE DUPLICATES</h1>
+        </div>
+        <nav>
+            <a href="/catalog">[catalog]</a>
+            <a href="/questions">[questions]</a>
+            <a href="/">[dashboard]</a>
+        </nav>
+    </header>
+
+    <section>
+        <form class="duplicate-threshold" method="GET" action="/catalog/duplicates">
+            <label>
+                similarity threshold
+                <input type="number" name="threshold" min="0.50" max="0.98" step="0.01" value="<%= threshold %>">
+            </label>
+            <button type="submit">[refresh]</button>
+        </form>
+        <p class="muted duplicate-help">Higher = stricter. Start around 0.72.</p>
+    </section>
+
+    <section>
+        <h2>CANDIDATES / <%= pairs.length %></h2>
+        <div class="duplicate-list">
+            <% for (const pair of pairs) { %>
+                <article class="duplicate-pair">
+                    <div class="duplicate-score">
+                        similarity
+                        <strong><%= Math.round(pair.score * 100) %>%</strong>
+                    </div>
+
+                    <div class="duplicate-question">
+                        <span class="question-code"><%= pair.first.question_code %></span>
+                        <p class="catalog-question"><%= pair.first.question %></p>
+                        <p class="catalog-answer">→ <%= pair.first.answer %></p>
+                        <div class="catalog-fields"><span><%= pair.first.topic || "-" %></span><span>d<%= pair.first.difficulty ?? "-" %></span></div>
+                    </div>
+
+                    <div class="duplicate-question">
+                        <span class="question-code"><%= pair.second.question_code %></span>
+                        <p class="catalog-question"><%= pair.second.question %></p>
+                        <p class="catalog-answer">→ <%= pair.second.answer %></p>
+                        <div class="catalog-fields"><span><%= pair.second.topic || "-" %></span><span>d<%= pair.second.difficulty ?? "-" %></span></div>
+                    </div>
+
+                    <div class="duplicate-actions">
+                        <form method="POST" action="/catalog/merge" onsubmit="return confirm('Keep <%= pair.first.question_code %> and merge/delete <%= pair.second.question_code %>?');">
+                            <input type="hidden" name="keeper_id" value="<%= pair.first.id %>">
+                            <input type="hidden" name="duplicate_id" value="<%= pair.second.id %>">
+                            <button type="submit">[keep <%= pair.first.question_code %>]</button>
+                        </form>
+
+                        <form method="POST" action="/catalog/merge" onsubmit="return confirm('Keep <%= pair.second.question_code %> and merge/delete <%= pair.first.question_code %>?');">
+                            <input type="hidden" name="keeper_id" value="<%= pair.second.id %>">
+                            <input type="hidden" name="duplicate_id" value="<%= pair.first.id %>">
+                            <button type="submit">[keep <%= pair.second.question_code %>]</button>
+                        </form>
+                    </div>
+                </article>
+            <% } %>
+        </div>
+    </section>
+</main>
+</body>
+</html>
